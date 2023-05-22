@@ -1,4 +1,4 @@
-import { ButtonDTO } from "../../models/button";
+
 import "./styles.css";
 
 type Props = {

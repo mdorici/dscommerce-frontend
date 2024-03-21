@@ -1,6 +1,6 @@
 import "./styles.css";
 import { useEffect, useState } from "react";
-import { OrderDTO } from "../../../models/order";
+import { OrderDTO, OrderItemDTO } from "../../../models/order";
 import { useParams } from "react-router-dom";
 import * as orderService from "../../../services/order-service";
 import { Link } from "react-router-dom";
@@ -11,7 +11,13 @@ export default function Confirmation() {
 
   useEffect(() => {
     orderService.findByIdRequest(Number(params.orderId)).then((response) => {
-      setOrder(response.data);
+      const newOrder = new OrderDTO();
+      newOrder.id = response.data.id;
+      newOrder.items = response.data.items.map(
+        (p : OrderDTO) =>
+        new OrderItemDTO(p.productId, p.quantity, p.name, p.price, p.imgUrl)
+      );
+      setOrder(newOrder);
     });
   }, []);
 
